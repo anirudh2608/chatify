@@ -13,3 +13,5 @@ export const selectChatMessages = createSelector(
     [selectChatReducer],
     (message) => message.messages
 )
+
+export const selectChatsIsLoading = (state) => state.chat.isLoading

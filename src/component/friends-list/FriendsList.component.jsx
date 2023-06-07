@@ -14,7 +14,8 @@ import Friend from "../friend/Friend.component"
 import Search from "../search/Search.component"
 import Navigation from "../../routes/navigation/Navigation.component";
 
-import { FriendListContainer, FriendContainer, Divider } from "./friends-list.style"
+import { FriendListContainer, FriendContainer } from "./friends-list.style"
+import Spinner, { SPINNER_TYPE_CLASSES } from "../spinner/Spinner.component";
 
 
 const FriendList = () => {
@@ -23,6 +24,7 @@ const FriendList = () => {
     const dispatch = useDispatch()
 
     const [chats, setChats] = useState({});
+    const [isLoading, setIsLoading] = useState(true)
 
     const currentUser = useSelector(selectCurrentUser)
 
@@ -32,6 +34,7 @@ const FriendList = () => {
             const db = getDb()
             const unSub = onSnapshot(doc(db, "userChats", currentUser.uid), (doc) => {
                 setChats(doc.data())
+                setIsLoading(false)
             });
 
             return () => {
@@ -53,14 +56,17 @@ const FriendList = () => {
                 <Navigation />
                 <h3>Chats</h3>
                 <Search />
-                {
-                    chats && Object.entries(chats).sort((a, b) => b[1].date - a[1].date).map((chat) => (
-                        <FriendContainer key={chat[0]} onClick={() => handleSelect(chat[1].userInfo)}>
-                            <Friend user={chat[1]} />
-                            <Divider />
-                        </FriendContainer>
-                    ))
-                }
+                <div>
+                    {isLoading && <Spinner spinnerType={SPINNER_TYPE_CLASSES.chatsSpinner} />}
+
+                    {
+                        chats && Object.entries(chats).sort((a, b) => b[1].date - a[1].date).map((chat) => (
+                            <FriendContainer key={chat[0]} onClick={() => handleSelect(chat[1].userInfo)}>
+                                <Friend user={chat[1]} />
+                            </FriendContainer>
+                        ))
+                    }
+                </div>
             </FriendListContainer>
         </>
     )

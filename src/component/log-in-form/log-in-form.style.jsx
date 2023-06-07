@@ -1,7 +1,5 @@
 import styled from "styled-components"
 
-import { Link } from "react-router-dom"
-
 export const LogInBox = styled.div`
 position: fixed;
 background-color: #f6f7f7;
@@ -63,6 +61,13 @@ export const ButtonContainer = styled.div`
 display: flex;
 flex-direction: column;
 margin: 20px 0px;
+
+p{
+    color: red;
+    text-align: center;
+    margin-bottom: 10px;
+    font-weight: 600;
+}
 `
 
 export const Divider = styled.div`
@@ -91,7 +96,7 @@ font-weight: 600;
 line-height: 1.5;
 color: #50575e;
 `
-export const GoToSignUpLink = styled(Link)`
-text-decoration: none;
+export const GoToSignUpLink = styled.span`
+cursor: pointer;
 color: blue;
 `

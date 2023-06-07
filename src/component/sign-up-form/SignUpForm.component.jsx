@@ -1,11 +1,14 @@
-import { useState } from "react"
-import { useDispatch } from "react-redux"
+import { useEffect, useState } from "react"
+import { useDispatch, useSelector } from "react-redux"
 import { useNavigate } from "react-router-dom"
 
-import { signUpstart } from "../../store/user/user.action"
+import { clearUserErrors, signUpstart } from "../../store/user/user.action"
+
+import { selectAuthError, selectIsLoading } from "../../store/user/user.selector"
 
 import Button from "../button/Button.component"
 import Input from "../input/Input.component"
+import Spinner from "../spinner/Spinner.component"
 
 import {
     SignUpFormBox,
@@ -31,8 +34,12 @@ const SignUpForm = () => {
 
     const dispatch = useDispatch()
 
-    const navigate =useNavigate()
+    const navigate = useNavigate()
 
+    const isLoading = useSelector(selectIsLoading)
+    const authError = useSelector(selectAuthError)
+
+    const [error, setError] = useState("")
     const [formFields, setFormFields] = useState(defaultFormFields)
     const { name, email, password, cPassword } = formFields
 
@@ -49,21 +56,34 @@ const SignUpForm = () => {
         event.preventDefault()
 
         if (password !== cPassword) {
-            alert("please enter correct password")
+            setError("Passwords do not match")
+            return
         }
 
         try {
             dispatch(signUpstart(email, password, { displayName: name }))
-            resetFormFields()
-            navigate("/login")
+            if (error) {
+                resetFormFields()
+                navigate("/login")
+            }
         }
         catch (error) {
             console.log(error)
         }
     }
 
+    const goToLogIn = () => {
+        dispatch(clearUserErrors())
+        navigate("/login")
+    }
+
+    useEffect(() => {
+        setError(authError)
+    }, [authError])
+
     return (
         <SignUpFormBox>
+            {isLoading && <Spinner />}
             <SignUpFormContainer>
                 <h1>Chatify</h1>
 
@@ -108,6 +128,7 @@ const SignUpForm = () => {
                     />
 
                     <ButtonContainer>
+                        {error && <p>{error}</p>}
                         <Button type="submit">Sign In</Button>
                     </ButtonContainer>
 
@@ -119,7 +140,7 @@ const SignUpForm = () => {
                     <Divider />
                 </Separater>
 
-                <GoToLogIn>Already have an account? <GoToLogInLink to="/login">Log In</GoToLogInLink></GoToLogIn>
+                <GoToLogIn>Already have an account? <GoToLogInLink onClick={goToLogIn}>Log In</GoToLogInLink></GoToLogIn>
 
             </SignUpFormContainer>
         </SignUpFormBox>

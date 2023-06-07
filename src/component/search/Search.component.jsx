@@ -41,7 +41,6 @@ const Search = () => {
             console.log(error)
         }
     }
-    console.log(users.length)
     return (
         <>
             <Input

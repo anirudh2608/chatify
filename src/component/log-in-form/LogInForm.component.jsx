@@ -1,10 +1,14 @@
-import { useState } from "react"
-import { useDispatch } from "react-redux"
+import { useEffect, useState } from "react"
+import { useDispatch, useSelector } from "react-redux"
+import {  useNavigate } from "react-router-dom"
 
-import { emailLogInStart, googleLogInStart } from "../../store/user/user.action"
+import { clearUserErrors, emailLogInStart, googleLogInStart } from "../../store/user/user.action"
+
+import { selectAuthError, selectIsLoading } from "../../store/user/user.selector"
 
 import Button, { BUTTON_TYPE_CLASSES } from "../button/Button.component"
 import Input from "../input/Input.component"
+import Spinner from "../spinner/Spinner.component"
 
 import {
     LogInBox,
@@ -19,6 +23,8 @@ import {
 
 
 
+
+
 const defaultFormFields = {
     email: "",
     password: ""
@@ -28,7 +34,13 @@ const defaultFormFields = {
 const LogInForm = () => {
 
     const dispatch = useDispatch()
+    const navigate = useNavigate()
 
+    const isLoading = useSelector(selectIsLoading)
+
+    const authError = useSelector(selectAuthError)
+
+    const [error, setError] = useState("")
     const [formFields, setFormFieids] = useState(defaultFormFields)
     const { email, password } = formFields
 
@@ -49,7 +61,7 @@ const LogInForm = () => {
             resetFormFields();
         }
         catch (error) {
-            console.log(error)
+            console.log(error.code)
         }
     }
 
@@ -57,9 +69,19 @@ const LogInForm = () => {
         dispatch(googleLogInStart())
     }
 
+    const goToSignUp = () => {
+        dispatch(clearUserErrors())
+        navigate("/signup")
+    }
+
+
+    useEffect(() => {
+        setError(authError)
+    }, [authError])
+
     return (
         <LogInBox>
-
+            {isLoading && <Spinner />}
             <LogInContainer>
                 <h1>Chatify</h1>
 
@@ -85,6 +107,7 @@ const LogInForm = () => {
                         required
                     />
                     <ButtonContainer>
+                        {error && <p>{error}</p>}
                         <Button type="submit">Log In</Button>
                         <Button buttonType={BUTTON_TYPE_CLASSES.google} onClick={logInWithGoogle}>Log in with Google</Button>
                     </ButtonContainer>
@@ -97,7 +120,7 @@ const LogInForm = () => {
                     <Divider />
                 </Separater>
 
-                <GoToSignUp>Don't have an account? <GoToSignUpLink to="/signup">Sign Up</GoToSignUpLink></GoToSignUp>
+                <GoToSignUp>Don't have an account? <GoToSignUpLink onClick={goToSignUp} >Sign Up</GoToSignUpLink></GoToSignUp>
             </LogInContainer>
         </LogInBox>
     )

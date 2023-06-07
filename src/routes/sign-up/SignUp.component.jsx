@@ -1,9 +1,11 @@
 import SignUpForm from "../../component/sign-up-form/SignUpForm.component"
 
 
-const SignUp = () =>{
+const SignUp = () => {
     return (
-        <SignUpForm />
+        <>
+            <SignUpForm />
+        </>
     )
 }
 

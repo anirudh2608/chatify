@@ -19,13 +19,14 @@ padding: 10px 20px;
 align-items: center;
 gap: 30px;     
 color: white;
-// border-bottom: 1px solid lightgray;
+width: 100%;
 cursor: pointer;
 `
 
 export const UserChatInfo = styled.div`
 display: flex;
 flex-direction: column;
+width: 100%;
 `
 
 export const UserName = styled.span`
@@ -39,6 +40,9 @@ letter-spacing: 1px;
 export const UserLatestMessage = styled.p`
 font-size: 14px;
 color: lightgray;
+width: 100%;
+padding-bottom: 5px;
+border-bottom: 1px solid lightgray; 
 `
 
 export const UserImage = styled.img`

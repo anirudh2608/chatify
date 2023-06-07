@@ -5,6 +5,7 @@ const INITITTAL_STATE = {
     user: {},
     currentUserChats: {},
     messages: [],
+    isLoading: false,
     error: null
 }
 
@@ -20,10 +21,23 @@ export const chatReducer = (state = INITITTAL_STATE, action) => {
                 chatId: combinedId
             }
 
+        case CHAT_ACTION_TYPES.FETCH_CURRENT_USER_CHATS_START:
+            return {
+                ...state,
+                isLoading: true
+            }
+
         case CHAT_ACTION_TYPES.FETCH_CURRENT_USER_CHATS_SUCCESS:
             return {
                 ...state,
-                currentUserChats: payload
+                currentUserChats: payload,
+                isLoading: false
+            }
+
+        case CHAT_ACTION_TYPES.FETCH_USER_MESSAGES_START:
+            return {
+                ...state,
+                isLoading: true
             }
 
         case CHAT_ACTION_TYPES.FETCH_USER_MESSAGES_SUCCESS:
@@ -36,7 +50,8 @@ export const chatReducer = (state = INITITTAL_STATE, action) => {
         case CHAT_ACTION_TYPES.FETCH_USER_MESSAGES_FAILED:
             return {
                 ...state,
-                error: payload
+                error: payload,
+                isLoading: false
             }
 
         default:

@@ -27,9 +27,3 @@ flex-direction: column;
     background-color: #5c5b5b;
 }
 `
-export const Divider = styled.div`
-border-bottom: 1px solid lightgray;
-width: 96%;
-margin-left: auto;
-margin-right: auto;
-`

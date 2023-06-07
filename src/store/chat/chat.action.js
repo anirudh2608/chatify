@@ -38,10 +38,10 @@ export const fetchCurrentUserChatsFailed = (error) => {
     })
 }
 
-export const fetchUserMessagesStart = (chatId) => {
+export const fetchUserMessagesStart = (messages) => {
     return ({
         type: CHAT_ACTION_TYPES.FETCH_USER_MESSAGES_START,
-        payload: chatId
+        payload: messages
     })
 }
 

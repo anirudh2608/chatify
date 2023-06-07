@@ -33,7 +33,7 @@ const Friend = ({ user, searchedUser }) => {
                 <UserImage src="https://images.pexels.com/photos/5558238/pexels-photo-5558238.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1" />
                 <UserChatInfo>
                     <UserName>{name}</UserName>
-                    <UserLatestMessage>{lastMessage}</UserLatestMessage>
+                    {lastMessage && <UserLatestMessage>{lastMessage}</UserLatestMessage>}
                 </UserChatInfo>
             </FriendInfoContainer>
         </>

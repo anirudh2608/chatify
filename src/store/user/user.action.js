@@ -1,5 +1,20 @@
 import { USER_ACTION_TYPES } from "./user.types";
 
+const errorFinder = (error) => {
+    switch (error.code) {
+        case "auth/user-not-found":
+            return "No user found"
+        case "auth/wrong-password":
+            return "Please enter correct password"
+        case "auth/email-already-in-use":
+            return "Email already in use"
+        case "auth/weak-password":
+            return "Password should be atleast 6 characters"
+        default:
+            return ""
+    }
+}
+
 export const setCurrentUser = (user) => {
     return ({
         type: USER_ACTION_TYPES.SET_CURRENT_USER,
@@ -34,9 +49,10 @@ export const logInSuccess = (user) => {
 }
 
 export const logInFailed = (error) => {
+    const loginError = errorFinder(error)
     return ({
         type: USER_ACTION_TYPES.LOG_IN_FAILED,
-        payload: error
+        payload: loginError
     })
 }
 
@@ -54,9 +70,10 @@ export const signUpSuccess = () => {
 }
 
 export const signUpFailed = (error) => {
+    const signUpError = errorFinder(error)
     return ({
         type: USER_ACTION_TYPES.SIGN_UP_FAILED,
-        payload: error
+        payload: signUpError
     })
 }
 
@@ -77,5 +94,11 @@ export const logOutFailed = (error) => {
     return ({
         type: USER_ACTION_TYPES.LOG_OUT_FAILED,
         payload: error
+    })
+}
+
+export const clearUserErrors = () =>{
+    return({
+        type:USER_ACTION_TYPES.CLEAR_USER_ERRORS
     })
 }

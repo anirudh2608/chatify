@@ -38,11 +38,12 @@ const MessageInput = () => {
     }
 
     const sendMessageHandler = () => {
+        if (!text || image) return
         dispatch(updateChatMessagesStart(image, text, chatId, currentUser, user))
         setText('')
         setImage(null)
     }
-    
+
     return (
         <MessageInputContainer>
 
